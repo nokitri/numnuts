@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>numnuts</title><link rel="icon" href="data:," />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/src/style.css" />
+</head>
+<body><main>
+  <header><h1>numnuts</h1><span class="logo" aria-hidden="true">✌︎('ω')✌︎</span>
+    <nav><span class="pop"><button id="favBtn" data-i18n-title="tFav">★</button>
+      <div id="favs" class="box" hidden><button id="saveFav" data-i18n="saveCode"></button><ol id="favList"></ol></div></span><button id="full" data-i18n-title="tFull">⛶</button><span class="pop"><button id="color" class="swatch" data-i18n-title="tColor" aria-haspopup="true"></button>
+      <div id="palette" class="box" hidden><div id="swatches"></div><label><span data-i18n="custom"></span> <input id="custom" type="color" /></label></div></span></nav></header>
+
+  <div id="drop" class="box" role="button" tabindex="0"><span data-i18n="drop"></span><small data-i18n="formats"></small><input id="file" class="visually-hidden" type="file" accept="audio/*,video/*,.mp3,.wav,.m4a,.aac,.ogg,.oga,.opus,.flac,.aif,.aiff,.caf,.webm,.mp4,.mov" tabindex="-1" />
+    <span id="samples"><span data-i18n="tryBuiltin"></span> <button data-sample="synth">synth</button> <button data-sample="pad">pad</button></span></div>
+
+  <section id="editor" class="box" hidden>
+    <div class="screen"><canvas id="scope" width="1200" height="600"></canvas>
+      <div id="time">0:00.00 / 0:00.00</div><div id="hud" aria-live="polite"><div id="digits"></div><div id="preview"></div></div>
+      <input id="tap" type="tel" inputmode="numeric" aria-label="code entry" autocomplete="off" /></div>
+    <canvas id="wave" width="1900" height="88" data-i18n-title="tWave"></canvas>
+    <ol id="chain" aria-label="applied codes"></ol>
+    <div class="row">
+      <button id="apply" class="primary"><span data-i18n="keep"></span> <kbd>⏎</kbd></button>
+      <button id="dice"><span data-i18n="random"></span> <kbd>R</kbd></button>
+      <button id="undo"><span data-i18n="undo"></span> <kbd>⌫</kbd></button>
+      <button id="clear"><span data-i18n="clear"></span> <kbd>X</kbd></button>
+      <button id="crop" hidden data-i18n-title="tCrop" data-i18n="crop"></button>
+      <span class="spacer"></span>
+      <button id="play"><span id="playLabel"></span> <kbd>␣</kbd></button>
+      <button id="download">wav</button>
+      <button id="load" data-i18n="load"></button>
+    </div>
+  </section>
+  <footer><span id="status"></span></footer>
+  <p id="build"></p>
+</main>
+<div id="scan" hidden><div class="box"><div id="scanTitle" data-i18n="analyzing"></div><canvas id="scanWave" width="1200" height="160"></canvas><div id="scanBar"></div><ol id="scanLog"></ol></div></div>
+<script type="module" src="/src/main.js"></script></body>
+</html>

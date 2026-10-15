@@ -1,0 +1,101 @@
+:root { --fg: #ff4fd8; --bg: #050505; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--fg); font: 20px/1.3 "VT323", ui-monospace, monospace; }
+main { max-width: 960px; margin: 0 auto; padding: 16px; text-shadow: 0 0 6px var(--fg); }
+
+header { display: flex; align-items: baseline; gap: 14px; margin: 8px 0 14px; }
+h1 { margin: 0; font-size: 44px; font-weight: 400; letter-spacing: .08em; }
+h1::after { content: "_"; animation: blink 1s steps(2) infinite; }
+header .logo { font-family: "VT323", "Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols 2", system-ui, sans-serif; font-size: 30px; white-space: nowrap; animation: bop 1.2s ease-in-out infinite; display: inline-block; }
+@keyframes bop { 50% { transform: translateY(-3px) rotate(-3deg); } }
+header nav { margin-left: auto; display: flex; gap: 6px; }
+@media (max-width: 560px) { header { flex-wrap: wrap; } }
+
+.box { border: 1px solid color-mix(in srgb, var(--fg) 45%, transparent); padding: 10px; background: color-mix(in srgb, var(--fg) 3%, #000); box-shadow: 0 0 24px color-mix(in srgb, var(--fg) 12%, transparent), inset 0 0 40px rgba(0,0,0,.6); }
+#drop { position: relative; display: block; text-align: center; cursor: pointer; padding: 40px 12px; border-style: dashed; }
+#drop.over { background: color-mix(in srgb, var(--fg) 10%, transparent); }
+#drop small { display: block; opacity: .6; }
+
+canvas { display: block; width: 100%; background: #000; }
+.screen { position: relative; }
+#scope { aspect-ratio: 2 / 1; }
+#wave { height: 44px; margin-top: 8px; cursor: pointer; touch-action: none; }
+
+#hud { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
+/* Inverted plate so the number always reads over a busy visualizer */
+#digits { font-size: clamp(110px, 26vw, 260px); line-height: .85; padding: 0 .12em .04em; opacity: 0; transition: opacity .08s; background: var(--fg); color: #000; text-shadow: none; box-shadow: 0 0 40px var(--fg), 0 0 0 6px #000, 0 0 0 8px var(--fg); }
+#digits:empty { visibility: hidden; }
+#digits .ghost { opacity: .3; }
+#digits.on { opacity: .95; }
+#digits.fire { animation: fire .7s ease-out forwards; }
+@keyframes fire { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.35); } }
+#preview { margin-top: 18px; padding: 2px 12px; background: #000; border: 1px solid var(--fg); min-height: 1.3em; }
+#preview:empty { visibility: hidden; }
+#tap { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: text; font-size: 16px; }
+
+.row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+button { font: inherit; color: var(--fg); background: transparent; border: 1px solid var(--fg); padding: 2px 12px; cursor: pointer; text-shadow: inherit; }
+/* Filled "active" look shared by hover, primary, toggled-on and selected buttons. */
+button:hover:not(:disabled), button.primary, button.on, button[aria-pressed=true] { background: var(--fg); color: #000; text-shadow: none; }
+button:disabled { opacity: .3; cursor: default; }
+button kbd { font: inherit; opacity: .55; margin-left: 4px; }
+button.swatch::before { content: ""; display: inline-block; width: .7em; height: .7em; margin-right: 6px; background: var(--fg); vertical-align: middle; }
+
+footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 12px; opacity: .65; font-size: 17px; }
+
+
+@keyframes blink { 50% { opacity: 0; } }
+
+/* CRT, always on: scanlines, vignette, flicker, curvature hint */
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 9;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.3) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.7) 100%);
+  animation: flicker .12s infinite; }
+canvas, .box { border-radius: 14px / 10px; }
+@keyframes flicker { 0%,100% { opacity: .94; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { body::after, h1::after, header .logo { animation: none; } }
+[hidden] { display: none !important; }
+#build { margin: 4px 0 0; opacity: .4; font-size: 15px; text-align: center; }
+#time { position: absolute; top: 8px; right: 12px; font-size: 22px; opacity: .8; pointer-events: none; font-variant-numeric: tabular-nums; }
+
+#scope { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fg) 20%, transparent); }
+.row .spacer { flex: 1; }
+.pop { position: relative; }
+#palette { position: absolute; right: 0; top: calc(100% + 6px); z-index: 5; width: 220px; padding: 10px; display: grid; gap: 8px; }
+#swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+#swatches button { aspect-ratio: 1; padding: 0; border: 2px solid transparent; background: var(--c); box-shadow: 0 0 8px var(--c); }
+#swatches button[aria-pressed=true] { border-color: #fff; background: var(--c); }
+#palette label { display: flex; justify-content: space-between; align-items: center; opacity: .8; }
+#custom { width: 48px; height: 28px; padding: 0; border: 1px solid var(--fg); background: #000; cursor: pointer; }
+#chain { list-style: none; display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0 0; padding: 0; min-height: 1.4em; }
+#chain button { padding: 0 8px; font-size: 18px; border-color: color-mix(in srgb, var(--fg) 40%, transparent); }
+#chain li:last-child button { border-color: var(--fg); }
+#chain li + li::before { content: "›"; opacity: .4; margin-right: 4px; }
+
+/* Load-time analyzing overlay */
+#scan { position: fixed; inset: 0; z-index: 8; display: grid; place-items: center; background: rgba(0,0,0,.85); padding: 16px; }
+#scan .box { width: min(640px, 100%); }
+#scanTitle { font-size: 30px; letter-spacing: .1em; text-transform: uppercase; }
+#scanTitle::after { content: "_"; animation: blink .5s steps(2) infinite; }
+#scanWave { height: 80px; margin: 10px 0; }
+#scanBar { white-space: pre; }
+#scanLog { list-style: none; padding: 0; margin: 8px 0 0; min-height: 8em; }
+#scanLog li::before { content: "> "; opacity: .5; }
+#scanLog li { animation: type .25s steps(12) both; overflow: hidden; white-space: nowrap; }
+@keyframes type { from { max-width: 0; } to { max-width: 100%; } }
+
+#samples { display: block; margin-top: 14px; opacity: .9; }
+#samples button { margin: 0 2px; }
+#favs { position: absolute; right: 0; top: calc(100% + 6px); z-index: 5; width: 300px; padding: 10px; }
+#saveFav { width: 100%; margin-bottom: 8px; }
+#favList { list-style: none; margin: 0; padding: 0; max-height: 300px; overflow: auto; display: grid; gap: 4px; }
+#favList li { display: flex; gap: 4px; } #favList li button:first-child { flex: 1; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#favList .x { padding: 0 8px; } #favList .empty { opacity: .6; }
+#preview .hint { margin-left: 12px; opacity: .55; }
+
+/* Phones: popovers can't hang off their (right-side) button, so pin them to the viewport under it. */
+@media (max-width: 600px) {
+  #palette, #favs { position: fixed; left: 12px; right: 12px; width: auto; top: var(--pop-top, 120px); max-height: calc(100vh - var(--pop-top, 120px) - 12px); overflow: auto; }
+}
+/* Off-screen but still "rendered": mobile browsers won't open a picker for a display:none file input. */
+.visually-hidden { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; pointer-events: none; }
