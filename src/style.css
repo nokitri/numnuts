@@ -6,8 +6,6 @@ main { max-width: 960px; margin: 0 auto; padding: 16px; text-shadow: 0 0 6px var
 header { display: flex; align-items: baseline; gap: 14px; margin: 8px 0 14px; }
 h1 { margin: 0; font-size: 44px; font-weight: 400; letter-spacing: .08em; }
 h1::after { content: "_"; animation: blink 1s steps(2) infinite; }
-header .logo { font-family: "VT323", "Segoe UI Symbol", "Apple Symbols", "Noto Sans Symbols 2", system-ui, sans-serif; font-size: 30px; white-space: nowrap; animation: bop 1.2s ease-in-out infinite; display: inline-block; }
-@keyframes bop { 50% { transform: translateY(-3px) rotate(-3deg); } }
 header nav { margin-left: auto; display: flex; gap: 6px; }
 @media (max-width: 560px) { header { flex-wrap: wrap; } }
 
@@ -53,7 +51,7 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
   animation: flicker .12s infinite; }
 canvas, .box { border-radius: 14px / 10px; }
 @keyframes flicker { 0%,100% { opacity: .94; } 50% { opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { body::after, h1::after, header .logo { animation: none; } }
+@media (prefers-reduced-motion: reduce) { body::after, h1::after { animation: none; } }
 [hidden] { display: none !important; }
 #build { margin: 4px 0 0; opacity: .4; font-size: 15px; text-align: center; }
 #time { position: absolute; top: 8px; right: 12px; font-size: 22px; opacity: .8; pointer-events: none; font-variant-numeric: tabular-nums; }
